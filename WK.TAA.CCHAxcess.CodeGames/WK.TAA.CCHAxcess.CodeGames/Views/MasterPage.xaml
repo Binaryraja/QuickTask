@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+                  xmlns:WKConfiguration="clr-namespace:WK.TAA.CCHAxcess.CodeGames.Configuration;assembly=WK.TAA.CCHAxcess.CodeGames"                  
+                  prism:ViewModelLocator.AutowireViewModel="True"
+                  xmlns:behaviors="clr-namespace:Behaviors;assembly=Behaviors"                       
+                  x:Class="WK.TAA.CCHAxcess.CodeGames.Views.MasterPage">
+    <MasterDetailPage.Master>
+        <NavigationPage Title="Menu" Icon="hamburger.png">
+            <x:Arguments>
+                <ContentPage Title="Menu" NavigationPage.HasNavigationBar="False" BackgroundColor="#007AC3">
+                    <StackLayout  Padding="30" VerticalOptions="FillAndExpand" >
+                        <Grid RowSpacing="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <!-- Home Button-->
+                            <ContentView HorizontalOptions="FillAndExpand"
+                                                        VerticalOptions="FillAndExpand"
+                                                        Grid.Row="0"
+                                                        Grid.ColumnSpan="2">
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding MasterHomeCommand}" NumberOfTapsRequired="1"/>
+                                </ContentView.GestureRecognizers>
+                                <Label Text="Home"   VerticalOptions="CenterAndExpand" HorizontalOptions="EndAndExpand" Grid.Row="0" Grid.ColumnSpan="2"  Style="{StaticResource WKMenuStyle}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding MasterHomeCommand}" NumberOfTapsRequired="1"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </ContentView>
+                            <!--Settings Button-->
+                            <ContentView HorizontalOptions="FillAndExpand"
+                                                        VerticalOptions="FillAndExpand"
+                                                        Grid.Row="1"
+                                                        Grid.ColumnSpan="2">
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SettingsCommand}" NumberOfTapsRequired="1"/>
+                                </ContentView.GestureRecognizers>
+                                <Label Text="Settings" VerticalOptions="CenterAndExpand" HorizontalOptions="EndAndExpand" Grid.Row="1" Grid.ColumnSpan="2"  Style="{StaticResource WKMenuStyle}" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SettingsCommand}" NumberOfTapsRequired="1"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </ContentView>
+                            <!--Separater-->
+                            <StackLayout  Grid.Row="2" Grid.ColumnSpan="2" >
+                                <BoxView HeightRequest="1"  BackgroundColor="LightGray"></BoxView>
+                            </StackLayout>
+                            <!--About Button-->
+                            <ContentView HorizontalOptions="FillAndExpand"
+                                                        VerticalOptions="FillAndExpand"
+                                                        Grid.Row="3"
+                                                        Grid.ColumnSpan="2">
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding AboutCommand}" NumberOfTapsRequired="1"/>
+                                </ContentView.GestureRecognizers>
+                                <Label Text="About"   VerticalOptions="CenterAndExpand" HorizontalOptions="EndAndExpand" Grid.Row="3" Grid.ColumnSpan="2"  Style="{StaticResource WKMenuStyle}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding AboutCommand}" NumberOfTapsRequired="1"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </ContentView>
+                        </Grid>
+                    </StackLayout>
+                    <ContentPage.Behaviors>
+                        <behaviors:EventHandlerBehavior EventName="Appearing">
+                            <behaviors:InvokeCommandAction Command="{Binding PageAppearingCommand}" />
+                        </behaviors:EventHandlerBehavior>
+                        <behaviors:EventHandlerBehavior EventName="Disappearing">
+                            <behaviors:InvokeCommandAction Command="{Binding PageDisappearingCommand}" />
+                        </behaviors:EventHandlerBehavior>
+                    </ContentPage.Behaviors>
+                </ContentPage>
+            </x:Arguments>
+        </NavigationPage>                
+    </MasterDetailPage.Master>
+</MasterDetailPage>

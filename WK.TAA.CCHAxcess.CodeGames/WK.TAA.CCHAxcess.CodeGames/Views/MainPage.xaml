@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WK.TAA.CCHAxcess.CodeGames.Views.MainPage"
+             xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"      
+             xmlns:local="clr-namespace:WK.TAA.CCHAxcess.CodeGames.Converters" 
+             xmlns:behaviors="clr-namespace:Behaviors;assembly=Behaviors"                  
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:SelectedItemEventArgsToSelectedItemConverter x:Key="SelectedItemConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>    
+    <ContentPage.Behaviors>
+        <behaviors:EventHandlerBehavior EventName="Appearing">
+            <behaviors:InvokeCommandAction Command="{Binding PageAppearingCommand}" />
+        </behaviors:EventHandlerBehavior>
+        <behaviors:EventHandlerBehavior EventName="Disappearing">
+            <behaviors:InvokeCommandAction Command="{Binding PageDisappearingCommand}" />
+        </behaviors:EventHandlerBehavior>
+    </ContentPage.Behaviors>
+    <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Grid Padding="10" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" Orientation="Horizontal">
+                <Label Text="My Jobs" HorizontalOptions="StartAndExpand" FontSize="Medium" Style="{StaticResource WKBaseBoldStyle}" />
+            </StackLayout>
+            <StackLayout  Grid.Row="1" >
+                <BoxView HeightRequest="1"  BackgroundColor="LightGray"></BoxView>
+            </StackLayout>
+            <ListView  Grid.Row="2" x:Name="lstPendingRequest"  ItemsSource="{Binding OpenRequests}" RowHeight="120"  SeparatorVisibility="None"
+                                IsPullToRefreshEnabled="True"
+                                RefreshCommand="{Binding RefreshCommand}"
+                                IsRefreshing="{Binding IsRefreshing}" >
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" Command="{Binding SelectedCommand}" EventArgsConverter="{StaticResource SelectedItemConverter}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="0,3,0,0" VerticalOptions="Center">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="Job Type"  Style="{StaticResource WKBaseBoldStyle}" Grid.Row="0" Grid.Column="0">
+                                        <Label.FontAttributes>
+                                            <OnPlatform x:TypeArguments="FontAttributes">
+                                                <On Platform="Android" Value="None"/>
+                                                <On Platform="iOS" Value="Bold"/>
+                                            </OnPlatform>
+                                        </Label.FontAttributes>
+                                    </Label>
+                                    <Label Text="{Binding BatchType }" Style="{StaticResource WKBaseStyle}" LineBreakMode="TailTruncation" Grid.Row="0" Grid.Column="1">
+                                        <Label.FontAttributes>
+                                            <OnPlatform x:TypeArguments="FontAttributes">
+                                                <On Platform="Android" Value="None"/>
+                                                <On Platform="iOS" Value="Bold"/>
+                                            </OnPlatform>
+                                        </Label.FontAttributes>
+                                    </Label>
+                                    <Label Text="Submitted On" Style="{StaticResource WKBaseBoldStyle}"  Grid.Row="1" Grid.Column="0"></Label>
+                                    <Label Text="{Binding SubmittedDtTm}" Style="{StaticResource WKBaseStyle}" Grid.Row="1" Grid.Column="1"></Label>
+                                    <Label Text="Completed On"  Grid.Row="2" Grid.Column="0" Style="{StaticResource WKBaseBoldStyle}" ></Label>
+                                    <Label Text="{Binding CompletedDtTm}" Style="{StaticResource WKBaseStyle}" Grid.Row="2" Grid.Column="1"></Label>
+                                    <Label Text="Status"  Grid.Row="3" Grid.Column="0" Style="{StaticResource WKBaseBoldStyle}" ></Label>
+                                    <Label Text="{Binding BatchStatus}" Style="{StaticResource WKSucessStyle}" Grid.Row="3" Grid.Column="1" IsVisible="{Binding IsSuccessVisible}"></Label>
+                                    <Label Text="{Binding BatchStatus}" Style="{StaticResource WKFailureStyle}" Grid.Row="3" Grid.Column="1" IsVisible="{Binding IsFailureVisible}"></Label>
+                                    <StackLayout Grid.Row="4" Grid.ColumnSpan="2">
+                                        <BoxView HeightRequest="1"  BackgroundColor="LightGray"  ></BoxView>
+                                    </StackLayout>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <StackLayout IsVisible="{Binding IsBusy}" Padding="12"
+                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                        AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Color ="#1ab394"/>
+            <Label Text="Loading" HorizontalOptions="Center" TextColor="#1ab394" />
+        </StackLayout>
+    </AbsoluteLayout>
+
+</ContentPage>
